@@ -56,11 +56,14 @@ def analyze ():
     return render_template('index.html')
     # return render_template('index.html', headline, clickbaitiness)
 
+# ^^^^^^ Utils below ^^^^^^
 
 def extractor(URL):
     article = Article(URL)
     article.download()
     article.parse()
+
+    return article.title
 
 
 
