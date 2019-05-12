@@ -2,6 +2,8 @@ src/*.pyc
 src/__pycache__/
 src/.DS_store
 src/.Python
+src/models/*.pyc
+src/preprocessors/*.pyc
 __pycache__/
 lib/
 include/
