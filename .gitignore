@@ -1,0 +1,11 @@
+src/*.pyc
+src/__pycache__/
+src/.DS_store
+src/.Python
+__pycache__/
+lib/
+include/
+*.log
+*.db
+.Python
+node_modules
