@@ -29,7 +29,7 @@ def analyze ():
             headline = extractor(sample_url)
         except Exception:
             logging.error("extract headline failed")
-            continue
+            pass
 
         if headline is not None:
             logging.info("extracted headline is: {0}".format(headline))
@@ -39,14 +39,14 @@ def analyze ():
                 clickbaitiness = predictor.predict(headline)
             except Exception:
                 logging.error("predict failed")
-                continue
+                pass
         else:
             # TODO: return index.html with error flash
-            continue
+            pass
     else:
         # TODO: return index.html with error flash
         logging.error("invalid URL is given")
-        continue
+        pass
 
     print("===============")
     print(headline)
