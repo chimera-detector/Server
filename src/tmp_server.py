@@ -27,7 +27,7 @@ def analyze ():
         logging.info("given URL is: {0}".format(sample_url))
         try:
             headline = extractor(sample_url)
-        except:
+        except Exception:
             logging.error("extract headline failed")
             continue
 
@@ -37,7 +37,7 @@ def analyze ():
             try:
                 # There should be an waiting time for this
                 clickbaitiness = predictor.predict(headline)
-            except:
+            except Exception:
                 logging.error("predict failed")
                 continue
         else:
