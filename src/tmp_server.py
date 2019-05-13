@@ -58,7 +58,9 @@ def analyze ():
         print(clickbaitiness)
         print("===============")
 
-        return render_template('index.html')
+        newsinfo = {"headline": headline, "clickbaitiness": round(clickbaitiness, 2)}
+
+        return render_template('index.html', newsinfo=newsinfo)
         # return render_template('index.html', headline, clickbaitiness)
     else:
         return render_template('index.html')
