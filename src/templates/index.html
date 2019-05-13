@@ -36,7 +36,7 @@
       <div class="row h-100">
         <div class="col-12 my-auto">
           <div class="masthead-content text-white py-5 py-md-0">
-            <h1 class="mb-3">Try it!</h1>
+            <h1 class="mb-3">CHIMERA Stance Detector!</h1>
             <p class="mb-5">We're working hard to finish the development of browser extension. Our target launch date is
               <strong>Late March 2019</strong>! Try our article stance detector using the form below!</p>
             <form action="/" method="POST" autocomplete="on" role="form">
@@ -47,6 +47,13 @@
                 </div>
               </div>
             </form>
+            <p class="mb-7"></p>
+            {% if newsinfo %}
+              <p class="mb-7"><strong>Headline is:</strong></p>
+              <p class="mb-7">{{ newsinfo['headline'] }}</p>
+              <p class="mb-7"><strong>Clickbait Label and Rate:</strong></p>
+              <p class="mb-7">{{ newsinfo['clickbaitiness'] }}</p>
+            {% endif %}
           </div>
         </div>
       </div>
