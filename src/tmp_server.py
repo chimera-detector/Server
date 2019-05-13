@@ -35,7 +35,7 @@ def analyze ():
                 pass
 
             if headline is not None:
-                logging.info("extracted headline is: {0}".format(headline))
+                # logging.info("extracted headline is: {0}".format(headline))
 
                 # try:
                 #     # There should be an waiting time for this
