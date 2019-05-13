@@ -26,8 +26,8 @@ def analyze ():
         headline = None
         clickbaitiness = None
 
-        if validators.url(sample_url):
-            logging.info("given URL is: {0}".format(sample_url))
+        if validators.url(sample_url) and sample_url is not "":
+            # logging.info("given URL is: {0}".format(sample_url))
             try:
                 headline = extractor.extract(sample_url)
             except Exception:
@@ -58,7 +58,10 @@ def analyze ():
         print(clickbaitiness)
         print("===============")
 
-        newsinfo = {"headline": headline, "clickbaitiness": round(clickbaitiness, 2)*100}
+        if headline is not None and clickbaitiness is not None:
+            newsinfo = {"headline": headline, "clickbaitiness": round(clickbaitiness, 2)*100}
+        else:
+            newsinfo = None
 
         return render_template('index.html', newsinfo=newsinfo)
         # return render_template('index.html', headline, clickbaitiness)
