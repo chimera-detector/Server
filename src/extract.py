@@ -18,7 +18,7 @@ class Extractor ():
             article = parse_article(res.text)
             return article['title']
         else:
-            print("failed")
+            print("extraction is failed")
 
     def parse_article(text):
         soup = BeautifulSoup(text, 'html.parser')
