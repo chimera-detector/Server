@@ -12,4 +12,5 @@ include/
 *.log
 *.db
 .Python
-node_modules
+node_modulesi
+.DS_store
