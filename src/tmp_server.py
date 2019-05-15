@@ -11,6 +11,7 @@ from extract import extractor # Article headline extractor
 import logging
 import validators
 import unicodedata
+import csv
 
 
 
@@ -26,8 +27,8 @@ def analyze ():
         headline = None
         clickbaitiness = None
 
-        if validators.url(sample_url):
-            logging.info("given URL is: {0}".format(sample_url))
+        if validators.url(sample_url) and sample_url is not "":
+            # logging.info("given URL is: {0}".format(sample_url))
             try:
                 headline = extractor.extract(sample_url)
             except Exception:
@@ -43,8 +44,16 @@ def analyze ():
                 # except Exception:
                 #     logging.error("predict failed")
                 #     pass
+
                 headline = unicodedata.normalize('NFKD', headline).encode('ascii','ignore')
                 clickbaitiness = predictor.predict(headline)
+
+                row = [headline, clickbaitiness] # For extracting as csv file
+                try:
+                    SetToFile(row)
+                except Exception:
+                    logging.error("store as file failed")
+                    pass
             else:
                 # TODO: return index.html with error flash
                 pass
@@ -53,17 +62,47 @@ def analyze ():
             logging.error("invalid URL is given")
             pass
 
-        print("===============")
         print(headline)
         print(clickbaitiness)
         print("===============")
 
-        newsinfo = {"headline": headline, "clickbaitiness": round(clickbaitiness, 2)}
+        if headline is not None and clickbaitiness is not None:
+            newsinfo = {"headline": headline, "clickbaitiness": round(clickbaitiness, 2)*100}
+        else:
+            newsinfo = None
 
         return render_template('index.html', newsinfo=newsinfo)
         # return render_template('index.html', headline, clickbaitiness)
     else:
         return render_template('index.html')
+
+
+def SetToFile(row):
+    # Assume that we already know the structure of csv file
+    # Appending following row
+    flag = False
+    headlines = []
+
+    with open('news.csv', 'r') as readFile:
+        reader = csv.reader(readFile)
+        lines = list(reader)
+        # print(lines)
+
+        for line in lines:
+            flag = (row[0] == line[0])
+            headlines.append(flag)
+
+
+        if True not in headlines:
+            with open('news.csv', 'a') as appendFile:
+                writer = csv.writer(appendFile)
+                writer.writerow(row)
+
+            appendFile.close()
+        else:
+            logging.error("headline is already exists")
+
+    readFile.close()
 
 
 
