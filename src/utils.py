@@ -181,3 +181,81 @@ def pipeline_train(train, test, lim_unigram):
         train_stances.append(label_ref[instance['Stance']])
 
     return train_set, train_stances, bow_vectorizer, tfreq_vectorizer, tfidf_vectorizer
+
+
+def pipeline_test(test, bow_vectorizer, tfreq_vectorizer, tfidf_vectorizer):
+
+    """
+        Process test set
+
+        Args:
+            test: FNCData object, test set
+            bow_vectorizer: sklearn CountVectorizer
+            tfreq_vectorizer: sklearn TfidTransformer(use_idf=False)
+            tfidf_vectorizer: sklean TfidfVectorizer()
+
+        Returns:
+            test_set: list, of numpy arrays
+    """
+
+    # Initialise
+    test_set = []
+    heads_track = {}
+    bodies_track = {}
+    cos_track = {}
+
+    # Process test set
+    # TODO: new test data retrieving method is required. not an FNCData object
+    for instance in test.instances:
+        head = instance['Headline']
+        body_id = instance['Body ID']
+        if head not in heads_track:
+            head_bow = bow_vectorizer.transform([head]).toarray()
+            head_tf = tfreq_vectorizer.transform(head_bow).toarray()[0].reshape(1, -1)
+            head_tfidf = tfidf_vectorizer.transform([head]).toarray().reshape(1, -1)
+            heads_track[head] = (head_tf, head_tfidf)
+        else:
+            head_tf = heads_track[head][0]
+            head_tfidf = heads_track[head][1]
+
+        if (head, body_id) not in cos_track:
+            tfidf_cos = cosine_similarity(head_tfidf, body_tfidf)[0].reshape(1, 1)
+            cos_track[(head, body_id)] = tfidf_cos
+        else:
+            tfidf cos = cos track[(head, body_id)]
+        feat_vec = np.squeeze(np.c_[head_tf, body_tf, tfidf, cos])
+        test_set.append(feat_vec)
+
+    return test_set
+
+
+def load_model(sess):
+
+    """
+        Load TensorFlow model
+
+        Args:
+            sess: TensorFlow session
+    """
+
+    saver = tf.train.Saver()
+    saver.restore(sess, './../models/model.checkpoint')
+
+
+def save_predictions(pred, file):
+
+    """
+        Save predictions to CSV file
+
+        Args:
+            pred: numpy array, of numeric predictions
+            file: str, filename + extension
+    """
+
+    with open(file, 'w') as csvfile:
+        fieldnames = ['Stance']
+        writer = DictWriter(csvfile, fieldnames=fieldnames)
+
+        writer.writeheader()
+        for instance in pred:
+            writer.writerow({'Stance': label_ref_rev[instance]})
