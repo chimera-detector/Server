@@ -2,7 +2,11 @@
 # author: Seoung H. Song
 
 
-"""This file has been made up with server.py base"""
+"""
+    This file has been made up with server.py base.
+
+    This server logic has been made in order to check the function of UCLMR engine.
+"""
 
 from flask import Flask, jsonify, request, render_template
 from flask import make_response
