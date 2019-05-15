@@ -6,6 +6,7 @@ src/models/__init__.pyc
 src/models/convnets.pyc
 src/preprocessors/__init__.pyc
 src/preprocessors/preprocess_text.pyc
+stance/predictions_test.csv
 __pycache__/
 lib/
 include/
