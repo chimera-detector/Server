@@ -13,7 +13,7 @@ from csv import DictReader
 from csv import DictWriter
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction.text import TfidTransformer
+from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import tensorflow as tf
@@ -222,7 +222,7 @@ def pipeline_test(test, bow_vectorizer, tfreq_vectorizer, tfidf_vectorizer):
             tfidf_cos = cosine_similarity(head_tfidf, body_tfidf)[0].reshape(1, 1)
             cos_track[(head, body_id)] = tfidf_cos
         else:
-            tfidf cos = cos track[(head, body_id)]
+            tfidf_cos = cos_track[(head, body_id)]
         feat_vec = np.squeeze(np.c_[head_tf, body_tf, tfidf, cos])
         test_set.append(feat_vec)
 

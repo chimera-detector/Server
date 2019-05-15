@@ -3,11 +3,11 @@
 
 from utils import *
 import random
-import tensorflow tf
+import tensorflow as tf
 
 
 # Prompt for mode
-mode = input('mode (load / train)? ')
+mode = input("mode (load / train)? ")
 
 
 # Set file names
@@ -73,7 +73,7 @@ predict = tf.arg_max(softmaxed_logits, 1)
 
 
 # Load model
-if mode == 'load':
+if mode == "load":
     with tf.Session as sess:
         load_model(sess)
 
@@ -83,7 +83,7 @@ if mode == 'load':
 
 
 # Train model
-if mode == 'train'
+if mode == "train":
 
     # Define optimiser
     opt_func = tf.train.AdamOptimizer(learn_rate)
