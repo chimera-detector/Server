@@ -1,13 +1,26 @@
-# usr/bin/python27
+# Copyright 2017 Benjamin Riedel
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 
+# Import relevant packages and modules
 from utils import *
 import random
 import tensorflow as tf
 
 
 # Prompt for mode
-mode = input("mode (load / train)? ")
+mode = raw_input('mode (load / train)? ')
 
 
 # Set file names
@@ -15,7 +28,7 @@ file_train_instances = "stance/train_stances.csv"
 file_train_bodies = "stance/train_bodies.csv"
 file_test_instances = "stance/test_stances_unlabeled.csv"
 file_test_bodies = "stance/test_bodies.csv"
-file_predictions = "stance/predictions_test.csv"
+file_predictions = 'stance/predictions_test.csv'
 
 
 # Initialise hyperparameters
@@ -40,7 +53,6 @@ n_train = len(raw_train.instances)
 # Process data sets
 train_set, train_stances, bow_vectorizer, tfreq_vectorizer, tfidf_vectorizer = \
     pipeline_train(raw_train, raw_test, lim_unigram=lim_unigram)
-
 feature_size = len(train_set[0])
 test_set = pipeline_test(raw_test, bow_vectorizer, tfreq_vectorizer, tfidf_vectorizer)
 
@@ -73,9 +85,10 @@ predict = tf.arg_max(softmaxed_logits, 1)
 
 
 # Load model
-if mode == "load":
-    with tf.Session as sess:
+if mode == 'load':
+    with tf.Session() as sess:
         load_model(sess)
+
 
         # Predict
         test_feed_dict = {features_pl: test_set, keep_prob_pl: 1.0}
@@ -83,7 +96,7 @@ if mode == "load":
 
 
 # Train model
-if mode == "train":
+if mode == 'train':
 
     # Define optimiser
     opt_func = tf.train.AdamOptimizer(learn_rate)
@@ -91,7 +104,7 @@ if mode == "train":
     opt_op = opt_func.apply_gradients(zip(grads, tf_vars))
 
     # Perform training
-    with tf.session() as sess:
+    with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
 
         for epoch in range(epochs):
