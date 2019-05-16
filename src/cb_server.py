@@ -30,7 +30,8 @@ def analyze ():
         if validators.url(sample_url) and sample_url is not "":
             # logging.info("given URL is: {0}".format(sample_url))
             try:
-                headline = extractor.extract(sample_url)
+                article = extractor.extract(sample_url)
+                headline = article['headline']
             except Exception:
                 logging.error("extract headline failed")
                 pass

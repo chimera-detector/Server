@@ -16,7 +16,8 @@ class Extractor ():
         res = requests.get(URL)
         if (res.status_code == 200 and 'content-type' in res.headers and res.headers.get('content-type').startswith('text/html')):
             article = parse_article(res.text)
-            return article['title']
+            # return article['title'] # return only the headline
+            return article
         else:
             print("extraction is failed")
 

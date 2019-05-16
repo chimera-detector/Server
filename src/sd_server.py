@@ -29,26 +29,22 @@ def analyze ():
     if request.method == 'POST':
         sample_url = request.form["sample_url"]
         headline = None
+        content = None
         clickbaitiness = None
 
         if validators.url(sample_url) and sample_url is not "":
             # logging.info("given URL is: {0}".format(sample_url))
             try:
-                headline = extractor.extract(sample_url)
+                article = extractor.extract(sample_url)
+
+                headline = article['headline']
+                content = article['content']
             except Exception:
                 logging.error("extract headline failed")
                 pass
 
-            if headline is not None:
-                # logging.info("extracted headline is: {0}".format(headline))
-
-                # try:
-                #     # There should be an waiting time for this
-                #     clickbaitiness = predictor.predict(headline)
-                # except Exception:
-                #     logging.error("predict failed")
-                #     pass
-
+            if headline is not None and content is not None:
+                
                 headline = unicodedata.normalize('NFKD', headline).encode('ascii','ignore')
                 clickbaitiness = predictor.predict(headline)
 
