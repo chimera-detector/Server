@@ -7,6 +7,8 @@ src/models/convnets.pyc
 src/preprocessors/__init__.pyc
 src/preprocessors/preprocess_text.pyc
 stance/predictions_test.csv
+stance/oneline_body.csv
+stance/oneline_stances_unlabeled.csv
 __pycache__/
 lib/
 include/
