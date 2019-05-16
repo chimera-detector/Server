@@ -10,7 +10,7 @@
 
 from flask import Flask, jsonify, request, render_template
 from flask import make_response
-from predict import *  # Article stance detector
+from predict import predictor  # Article stance detector
 from extract import extractor # Article headline extractor
 import logging
 import validators
@@ -46,7 +46,7 @@ def analyze ():
             if headline is not None and content is not None:
 
                 # headline = unicodedata.normalize('NFKD', headline).encode('ascii','ignore')
-                stance = predictor.predict(headline, content)
+                stance = predictor(headline, content)
 
                 row = [headline, stance] # For extracting as csv file
                 try:
