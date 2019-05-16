@@ -10,7 +10,7 @@
 
 from flask import Flask, jsonify, request, render_template
 from flask import make_response
-from detect import predictor  # Article headline's clickbaitiness predictor
+from predict import *  # Article stance detector
 from extract import extractor # Article headline extractor
 import logging
 import validators
@@ -44,11 +44,11 @@ def analyze ():
                 pass
 
             if headline is not None and content is not None:
-                
-                headline = unicodedata.normalize('NFKD', headline).encode('ascii','ignore')
-                clickbaitiness = predictor.predict(headline)
 
-                row = [headline, clickbaitiness] # For extracting as csv file
+                # headline = unicodedata.normalize('NFKD', headline).encode('ascii','ignore')
+                stance = predictor.predict(headline, content)
+
+                row = [headline, stance] # For extracting as csv file
                 try:
                     SetToFile(row)
                 except Exception:
@@ -63,11 +63,11 @@ def analyze ():
             pass
 
         print(headline)
-        print(clickbaitiness)
+        print(stance)
         print("===============")
 
         if headline is not None and clickbaitiness is not None:
-            newsinfo = {"headline": headline, "clickbaitiness": round(clickbaitiness, 2)*100}
+            newsinfo = {"headline": headline, "stance": stance}
         else:
             newsinfo = None
 
@@ -83,7 +83,7 @@ def SetToFile(row):
     flag = False
     headlines = []
 
-    with open('news.csv', 'r') as readFile:
+    with open('news_stance.csv', 'r') as readFile:
         reader = csv.reader(readFile)
         lines = list(reader)
         # print(lines)
