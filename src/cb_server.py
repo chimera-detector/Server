@@ -31,7 +31,7 @@ def analyze ():
             # logging.info("given URL is: {0}".format(sample_url))
             try:
                 article = extractor.extract(sample_url)
-                headline = article['headline']
+                headline = article['title']
             except Exception:
                 logging.error("extract headline failed")
                 pass
@@ -78,6 +78,13 @@ def analyze ():
         return render_template('index.html')
 
 
+@app.route("/detect", methods=["GET"])
+def detect ():
+    headline = request.args.get("headline", "")
+    clickbaitiness = predictor.predict(headline)
+    return jsonify({ "clickbaitiness": round(clickbaitiness * 100, 2) })
+
+
 def SetToFile(row):
     # Assume that we already know the structure of csv file
     # Appending following row
@@ -116,4 +123,4 @@ if __name__ == "__main__":
                         datefmt='%d-%b-%y %H:%M:%S',
                         format='%(asctime)s-%(name)s-%(levelname)s-%(message)s')
 
-    app.run(host='127.0.0.1', port=3000, debug=True)
+    app.run(host='127.0.0.1', port=3000, debug=True, ssl_context=('cert.pem', 'key.pem'))
