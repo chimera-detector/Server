@@ -37,7 +37,7 @@ def analyze ():
             try:
                 article = extractor.extract(sample_url)
 
-                headline = article['headline']
+                headline = article['title']
                 content = article['content']
             except Exception:
                 logging.error("extract headline failed")
