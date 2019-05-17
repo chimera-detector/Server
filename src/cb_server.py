@@ -81,8 +81,10 @@ def analyze ():
 @app.route("/detect", methods=["GET"])
 def detect ():
     headline = request.args.get("headline", "")
+    print("Headline from the extension: {0}".format(headline))
     clickbaitiness = predictor.predict(headline)
     return jsonify({ "clickbaitiness": round(clickbaitiness * 100, 2) })
+
 
 
 def SetToFile(row):
