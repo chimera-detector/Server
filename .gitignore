@@ -17,3 +17,5 @@ include/
 .Python
 node_modulesi
 .DS_store
+cert.pem
+key.pem
