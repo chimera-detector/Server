@@ -17,6 +17,8 @@ import csv
 
 
 app = Flask(__name__)
+
+# allow all domains can get the response from this server.
 CORS(app)
 
 
@@ -84,9 +86,19 @@ def analyze ():
 def detect ():
     headline = request.args.get("headline", "")
     clickbaitiness = predictor.predict(headline)
-    print(headline)
-    print("==============")
+
+    # TODO: Store headlines and their clickbaitiness results as external file.
     return jsonify({ "clickbaitiness": round(clickbaitiness * 100, 2) })
+
+
+@app.route("/predict", methods=["GET"])
+def predict ():
+    url = request.args.get("URL", "")
+
+    # TODO: run stance prediction model with given url and return the result.
+    stance = 'empty_now'
+    # TODO: Store headlines and their stance results as external file.
+    return jsonify({ "stance": stance })
 
 
 
