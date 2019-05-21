@@ -8,6 +8,7 @@ from flask import Flask, jsonify, request, render_template
 from flask import make_response
 from detect import predictor  # Article headline's clickbaitiness predictor
 from extract import extractor # Article headline extractor
+from flask_cors import CORS
 import logging
 import validators
 import unicodedata
@@ -16,6 +17,7 @@ import csv
 
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route("/", methods=['GET','POST'])
@@ -81,8 +83,9 @@ def analyze ():
 @app.route("/detect", methods=["GET"])
 def detect ():
     headline = request.args.get("headline", "")
-    print("Headline from the extension: {0}".format(headline))
     clickbaitiness = predictor.predict(headline)
+    print(headline)
+    print("==============")
     return jsonify({ "clickbaitiness": round(clickbaitiness * 100, 2) })
 
 
