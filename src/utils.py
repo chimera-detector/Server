@@ -302,6 +302,32 @@ def save_predictions(pred, file):
         for instance in pred:
             writer.writerow({'Stance': label_ref_rev[instance]})
 
+
+def check_predictions(file):
+
+    """
+
+    Check predictions from CSV file
+
+    Args:
+        file: str, filename + extension
+
+    """
+
+    # Initialise
+    rows = []
+
+    # Process file
+    with open(file, "r") as table:
+        r = DictReader(table)
+        for line in r:
+            rows.append(line)
+
+    print(rows)
+
+    return rows
+
+
 def save_testData(newsInfo, head_file, body_file):
 
     """
