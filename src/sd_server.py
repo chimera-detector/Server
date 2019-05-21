@@ -30,7 +30,7 @@ def analyze ():
         sample_url = request.form["sample_url"]
         headline = None
         content = None
-        clickbaitiness = None
+        stance = None
 
         if validators.url(sample_url) and sample_url is not "":
             # logging.info("given URL is: {0}".format(sample_url))
@@ -39,6 +39,10 @@ def analyze ():
 
                 headline = article['title']
                 content = article['content']
+
+                print(headline)
+                print(content)
+                print("===============")
             except Exception:
                 logging.error("extract headline failed")
                 pass
@@ -46,8 +50,8 @@ def analyze ():
             if headline is not None and content is not None:
 
                 # headline = unicodedata.normalize('NFKD', headline).encode('ascii','ignore')
-                detector.record_as_file(headline, content)
-                stance = detector(headline, content)
+                detector.save_testData(headline, content)
+                stance = detector.detect(headline, content)
 
                 row = [headline, stance] # For extracting as csv file
                 try:
@@ -67,13 +71,13 @@ def analyze ():
         print(stance)
         print("===============")
 
-        if headline is not None and clickbaitiness is not None:
+        if headline is not None and stance is not None:
             newsinfo = {"headline": headline, "stance": stance}
         else:
             newsinfo = None
 
-        return render_template('index.html', newsinfo=newsinfo)
-        # return render_template('index.html', headline, clickbaitiness)
+        # return render_template('index.html', newsinfo=newsinfo)
+        return render_template('index.html')
     else:
         return render_template('index.html')
 
@@ -116,4 +120,4 @@ if __name__ == "__main__":
                         datefmt='%d-%b-%y %H:%M:%S',
                         format='%(asctime)s-%(name)s-%(levelname)s-%(message)s')
 
-    app.run(host='127.0.0.1', port=3000, debug=True)
+    app.run(host='127.0.0.1', port=3000, debug=True, ssl_context=('cert.pem', 'key.pem'))

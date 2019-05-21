@@ -5,12 +5,13 @@
 from utils import *
 import random
 import tensorflow as tf
+import sys, os
 
 # Set file names
 file_train_instances = "stance/train_stances.csv"
 file_train_bodies = "stance/train_bodies.csv"
-file_test_instances = "stance/oneline_stances_unlabeled.csv"
-file_test_bodies = "stance/oneline_body.csv"
+file_test_instances = "stance/test_stances_unlabeled.csv"
+file_test_bodies = "stance/test_bodies.csv"
 file_predictions = 'stance/predictions_oneline.csv'
 
 # Initialise hyperparameters
@@ -80,27 +81,30 @@ class Detector ():
 
         # Save predictions
         save_predictions(test_pred, file_predictions)
-        return test_pred
+        stance = check_predictions(file_predictions)
 
-    def record_as_file(headline, content):
+        return stance
+
+    def save_testData(self, headline, content):
         # TODO: Keep this file has only one line of rows
         with open(file_test_instances, 'w') as csvfile:
             fieldnames = ['Headline', 'Body ID']
             writer = DictWriter(csvfile, fieldnames=fieldnames)
 
             writer.writeheader()
-            for instance in pred:
-                writer.writerow({'Headline': headline, 'Body ID': 1})
+            writer.writerow({'Headline': headline, 'Body ID': 1})
 
         with open(file_test_bodies, 'w') as csvfile:
             fieldnames = ['Body ID', 'articleBody']
             writer = DictWriter(csvfile, fieldnames=fieldnames)
 
             writer.writeheader()
-            for instance in pred:
-                writer.writerow({'Body ID': 1, 'articleBody': content})
+            writer.writerow({'Body ID': 1, 'articleBody': content})
 
 detector = Detector()
 
 if __name__ == "__main__":
+    print(sys.argv[1])
+    print(sys.argv[2])
+    print('==========')
     print("stance is: {0}".format(detector.detect(sys.argv[1], sys.argv[2])))
