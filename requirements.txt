@@ -23,6 +23,7 @@ enum34==1.1.6
 feedfinder2==0.0.4
 feedparser==5.2.1
 Flask==0.12
+Flask-Cors==3.0.7
 funcsigs==1.0.2
 functools32==3.2.3.post2
 future==0.17.1
