@@ -301,3 +301,31 @@ def save_predictions(pred, file):
         writer.writeheader()
         for instance in pred:
             writer.writerow({'Stance': label_ref_rev[instance]})
+
+def save_testData(newsInfo, head_file, body_file):
+
+    """
+    Save newsInfo.headline, newsInfo.body to CSV file
+
+    Args:
+        newsInfo: dictionary {"headline": "aa", "body": "bb"}
+        head_file: str, filename + extension
+        body_file: str, filename + extension
+    """
+
+    headline = newsInfo.headline
+    body = newsInfo.body
+
+    with open(head_file, 'w') as head_csv:
+        fieldnames = ["Headline", "Body ID"]
+        writer = DictWriter(head_csv, fieldnames=fieldnames)
+
+        writer.writeheader()
+        writer.writerow({'Headline': headline, 'Body ID': 1})
+
+    with open(body_file, 'w') as body_csv:
+        fieldnames = ["Body ID", "articleBody"]
+        writer = DictWriter(body_csv, fieldnames=fieldnames)
+
+        writer.writeheader()
+        writer.writerow({'Headline': headline, 'Body ID': 1})
