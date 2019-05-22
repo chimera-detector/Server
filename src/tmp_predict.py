@@ -72,6 +72,11 @@ class Detector ():
         return None
 
     def detect(self, headline, content):
+
+        print("HEADLINE: \n {0}".format(headline))
+        print("CONTENT: \n {0}".format(content))
+        print("===================================")
+
         with tf.Session() as sess:
             load_model(sess)
 
@@ -104,7 +109,4 @@ class Detector ():
 detector = Detector()
 
 if __name__ == "__main__":
-    print(sys.argv[1])
-    print(sys.argv[2])
-    print('==========')
     print("stance is: {0}".format(detector.detect(sys.argv[1], sys.argv[2])))

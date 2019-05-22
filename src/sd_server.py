@@ -40,9 +40,6 @@ def analyze ():
                 headline = article['title']
                 content = article['content']
 
-                print(headline)
-                print(content)
-                print("===============")
             except Exception:
                 logging.error("extract headline failed")
                 pass
