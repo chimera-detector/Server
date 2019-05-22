@@ -280,6 +280,7 @@ def load_model(sess):
 
     saver = tf.train.Saver()
     saver.restore(sess, 'models/model.checkpoint')
+    print("Load Model Successfully!!")
 
 
 def save_predictions(pred, file):
