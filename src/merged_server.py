@@ -81,12 +81,19 @@ def detect ():
 def predict ():
     url = request.args.get("URL", "")
 
+    headline = None
+    content = None
+    stance = None
+
     if validators.url(url) and url is not "":
         try:
-            article = extractor.extract(sample_url)
+            article = extractor.extract(url)
 
             headline = article['title']
             content = article['content']
+
+            print(headline)
+            print(content)
 
         except Exception:
             logging.error("extract headline failed")
@@ -103,18 +110,17 @@ def predict ():
             except Exception:
                 logging.error("store as file failed")
                 pass
+
+            if stance is not None:
+                return jsonify({ "stance": stance})
+            else:
+                return jsonify({ "stance": ""})
         else:
             # TODO: return index.html with error flash
             pass
     else:
         logging.error("invalid URL is given")
         pass
-
-    if headline is not None and stance is not None:
-        return jsonify({ "stance": stance})
-    else:
-        return jsonify({ "stance": ""})
-
 
 
 def SetToFile(row):
