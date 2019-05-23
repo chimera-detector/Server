@@ -6,7 +6,7 @@
 
 from flask import Flask, jsonify, request, render_template
 from flask import make_response
-from detect import predictor  # Article headline's clickbaitiness predictor
+from detect import detector  # Article headline's clickbaitiness predictor
 from extract import extractor # Article headline extractor
 from flask_cors import CORS
 import logging
@@ -51,7 +51,7 @@ def analyze ():
                 #     pass
 
                 headline = unicodedata.normalize('NFKD', headline).encode('ascii','ignore')
-                clickbaitiness = predictor.predict(headline)
+                clickbaitiness = detector.detect(headline)
 
                 row = [headline, clickbaitiness] # For extracting as csv file
                 try:

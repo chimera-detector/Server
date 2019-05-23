@@ -15,11 +15,11 @@ file_test_instances = "stance/test_stances_unlabeled.csv"
 file_test_bodies = "stance/test_bodies.csv"
 file_predictions = 'stance/predictions_oneline.csv'
 
-class Detector ():
+class Predictor ():
     def __init__(self):
         return None
 
-    def detect(self, headline, content):
+    def predict(self, headline, content):
 
         # Initialise hyperparameters
         r = random.Random()
@@ -102,7 +102,7 @@ class Detector ():
             writer.writeheader()
             writer.writerow({'Body ID': 1, 'articleBody': content})
 
-detector = Detector()
+predictor = Predictor()
 
 if __name__ == "__main__":
-    print("stance is: {0}".format(detector.detect(sys.argv[1], sys.argv[2])))
+    print("stance is: {0}".format(predictor.predict(sys.argv[1], sys.argv[2])))
