@@ -10,6 +10,9 @@ from detect import detector  # Article headline's clickbaitiness predictor
 from tmp_predict import predictor # Article stance detector
 from extract import extractor # Article headline extractor
 from flask_cors import CORS
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from database_setup import Base, Clickbait, Stance
 import logging
 import validators
 import unicodedata
@@ -21,6 +24,14 @@ app = Flask(__name__)
 
 # allow all domains can get the response from this server.
 CORS(app)
+
+# Connect to database
+engine = create_engine('sqlite:///cnn.db')
+Base.metadata.bind = engine
+
+# Create session
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
 
 # analyze def() is just for testing website (currently, clickbaitiness checking)
 @app.route("/", methods=['GET','POST'])
