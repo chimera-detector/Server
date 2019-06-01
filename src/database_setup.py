@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 Base = declarative_base()
 
 
-class clickbait(Base):
+class Clickbait(Base):
     __tablename__ = 'clickbait'
 
     id = Column(Integer, primary_key=True)
@@ -24,7 +24,7 @@ class clickbait(Base):
             'clickbaitiness': self.clickbaitiness
         }
 
-class stance(Base):
+class Stance(Base):
     __tablename__ = 'stance'
 
     id     = Column(Integer, primary_key=True)
