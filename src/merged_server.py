@@ -84,6 +84,13 @@ def detect ():
     headline = request.args.get("headline", "")
     clickbaitiness = detector.detect(headline)
 
+    # push clickbaitiness information into DB
+    newArticle = Clickbait(title=headline,
+                           clickbaitiness=clickbaitiness)
+
+    session.add(newArticle)
+    session.commit()
+
     # TODO: Store headlines and their clickbaitiness results as external file.
     return jsonify({ "clickbaitiness": round(clickbaitiness * 100, 2) })
 
@@ -103,8 +110,12 @@ def predict ():
             headline = article['title']
             content = article['content']
 
-            print(headline)
-            print(content)
+            # push stance information into DB
+            newArticle = Stance(title=headline,
+                                content=content)
+
+            session.add(newArticle)
+            session.commit()
 
         except Exception:
             logging.error("extract headline failed")
@@ -160,6 +171,26 @@ def SetToFile(row):
             logging.error("headline is already exists")
 
     readFile.close()
+
+
+def getClickbait(article_id):
+    article = session.query(Clickbait).filter_by(id=article_id).one()
+    return article
+
+
+def getStance(article_id):
+    article = session.query(Stance).filter_by(id=article_id).one()
+    return article
+
+
+def getClickbaitAll():
+    articles = session.query(Clickbait)
+    return articles
+
+
+def getStanceAll():
+    articles = session.query(Stance)
+    return articles
 
 
 
