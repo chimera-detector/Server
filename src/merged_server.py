@@ -5,7 +5,7 @@
 """This file has been made up with server.py base"""
 
 from flask import Flask, jsonify, request, render_template
-from flask import make_response
+from flask import make_response, send_file
 from detect import detector  # Article headline's clickbaitiness predictor
 from tmp_predict import predictor # Article stance detector
 from extract import extractor # Article headline extractor
@@ -189,6 +189,19 @@ def SetToFile(row):
             logging.error("headline is already exists")
 
     readFile.close()
+
+""" ========== API =========== """
+
+@app.route("/api/download/<path>")
+def downloadFile(path = None):
+    if path is None:
+        self.error(400)
+    try:
+        return send_file(path, as_attachment=True)
+    except:
+        self.log.exception(e)
+        self.Error(400)
+
 
 
 """ ========== Utils =========== """
