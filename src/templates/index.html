@@ -52,7 +52,7 @@
               <p class="mb-7"><strong>Headline is:</strong></p>
               <p class="mb-7">{{ newsinfo['headline'] }}</p>
               <p class="mb-7"><strong>Clickbait Label and Rate:</strong></p>
-              <p class="mb-7">{{ newsinfo['clickbaitiness'] }}%</p>
+              <p class="mb-7">{{ round(newsinfo['clickbaitiness'], 2) * 100 }}%</p>
             {% endif %}
           </div>
         </div>
