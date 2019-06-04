@@ -26,7 +26,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Connect to database
-engine = create_engine('sqlite:///cnn.db')
+engine = create_engine('sqlite:///cnn.db?check_same_thread=False')
 Base.metadata.bind = engine
 
 # Create session
@@ -71,12 +71,36 @@ def analyze ():
 
         if headline is not None and clickbaitiness is not None:
             newsinfo = {"headline": headline, "clickbaitiness": round(clickbaitiness, 2)*100}
+
+            """ Test Zone"""
+            newArticle = Clickbait(title=headline,
+                                   clickbaitiness=clickbaitiness)
+
+            session.add(newArticle)
+            session.commit()
+
         else:
             newsinfo = None
 
         return render_template('index.html', newsinfo=newsinfo)
     else:
         return render_template('index.html')
+
+
+# Purpose of getClickbait: return all the queries what the clickbait table has.
+@app.route("/cb_result", methods=["GET"])
+def cb_result ():
+    queries = getClickbaitAll()
+    # TODO: this function need to return the list of json object
+    return jsonify(result = [q.serialize for q in queries])
+
+# Purpose of getClickbait: return all the queries what the clickbait table has.
+@app.route("/st_result", methods=["GET"])
+def st_result ():
+    queries = getStanceAll()
+    # TODO: this function need to return the list of json object
+    return jsonify(result = [q.serialize for q in queries])
+
 
 
 @app.route("/detect", methods=["GET"])
@@ -172,7 +196,8 @@ def SetToFile(row):
 
     readFile.close()
 
-
+""" ^^^ Utils ^^^ """
+# note that below functions return `Object`
 def getClickbait(article_id):
     article = session.query(Clickbait).filter_by(id=article_id).one()
     return article
@@ -184,12 +209,12 @@ def getStance(article_id):
 
 
 def getClickbaitAll():
-    articles = session.query(Clickbait)
+    articles = session.query(Clickbait).all()
     return articles
 
 
 def getStanceAll():
-    articles = session.query(Stance)
+    articles = session.query(Stance).all()
     return articles
 
 
