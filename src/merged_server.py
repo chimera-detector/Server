@@ -70,19 +70,16 @@ def analyze ():
             pass
 
         if headline is not None and clickbaitiness is not None:
-            newsinfo = {"headline": headline, "clickbaitiness": round(clickbaitiness, 2)*100}
+            # newsInfo = {"headline": headline, "clickbaitiness": round(clickbaitiness, 2)*100}
+            newsInfo = {"headline": headline, "clickbaitiness": clickbaitiness}
 
             """ Test Zone"""
-            newArticle = Clickbait(title=headline,
-                                   clickbaitiness=clickbaitiness)
-
-            session.add(newArticle)
-            session.commit()
+            pushToDB(newsInfo)
 
         else:
-            newsinfo = None
+            newsInfo = None
 
-        return render_template('index.html', newsinfo=newsinfo)
+        return render_template('index.html', newsinfo=newsInfo)
     else:
         return render_template('index.html')
 
@@ -134,13 +131,6 @@ def predict ():
             headline = article['title']
             content = article['content']
 
-            # push stance information into DB
-            newArticle = Stance(title=headline,
-                                content=content)
-
-            session.add(newArticle)
-            session.commit()
-
         except Exception:
             logging.error("extract headline failed")
             pass
@@ -149,6 +139,10 @@ def predict ():
 
             predictor.save_testData(headline, content)
             stance = predictor.predict(headline, content)
+
+            # push stance information into DB
+            newsInfo = jsonify({"headline": headline, "content": content, "stance": stance})
+            pushToDB(newsInfo)
 
             row = [headline, stance] # For extracting as csv file
             try:
@@ -178,8 +172,8 @@ def SetToFile(row):
     with open('news.csv', 'r') as readFile:
         reader = csv.reader(readFile)
         lines = list(reader)
-        # print(lines)
 
+        # Duplication article headline checking
         for line in lines:
             flag = (row[0] == line[0])
             headlines.append(flag)
@@ -196,7 +190,50 @@ def SetToFile(row):
 
     readFile.close()
 
-""" ^^^ Utils ^^^ """
+
+""" ========== Utils =========== """
+
+# pushToDB function will push newsInfo into DB properly regardless the type of Info
+def pushToDB(newsInfo):
+    newArticle = None
+    duplication_flag = False
+
+    print(newsInfo)
+
+    if "stance" in newsInfo.keys() :
+        duplication_flag = is_headline_duplicated(newsInfo["headline"])
+        if duplication_flag is False :
+            newArticle = Stance(title=newsInfo["headline"],
+                                content=newsInfo["content"],
+                                stance=newsInfo["stance"])
+
+            session.add(newArticle)
+            session.commit()
+            print("Clickbait result has been added into DB!!")
+        else:
+            print("headline exists")
+    else:
+        duplication_flag = is_headline_duplicated(newsInfo["headline"])
+        if duplication_flag is False :
+            newArticle = Clickbait(title=newsInfo["headline"],
+                                   clickbaitiness=newsInfo["clickbaitiness"])
+
+            session.add(newArticle)
+            session.commit()
+            print("Stance result has been added into DB!!")
+        else:
+            print("headline exists")
+
+
+def is_headline_duplicated(headline):
+    if headline is not None:
+        queries = session.query(Clickbait).filter_by(title=headline).all()
+        if len(queries) > 0:
+            return True
+        else:
+            return False
+
+
 # note that below functions return `Object`
 def getClickbait(article_id):
     article = session.query(Clickbait).filter_by(id=article_id).one()
