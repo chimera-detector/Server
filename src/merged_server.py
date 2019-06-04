@@ -79,7 +79,7 @@ def analyze ():
         else:
             newsInfo = None
 
-        return render_template('index.html', newsinfo=newsInfo)
+        return render_template('index.html', headline=newsInfo['headline'], cb_result=round(newsInfo['clickbaitiness'], 2)*100)
     else:
         return render_template('index.html')
 
