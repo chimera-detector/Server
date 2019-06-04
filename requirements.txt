@@ -23,6 +23,7 @@ enum34==1.1.6
 feedfinder2==0.0.4
 feedparser==5.2.1
 Flask==0.12
+Flask-Cors==3.0.7
 funcsigs==1.0.2
 functools32==3.2.3.post2
 future==0.17.1
@@ -72,6 +73,7 @@ requests==2.21.0
 requests-file==1.4.3
 rsa==3.4.2
 s3transfer==0.2.0
+scikit-learn==0.18.1
 scipy==0.18.1
 Scrapy==1.6.0
 service-identity==18.1.0

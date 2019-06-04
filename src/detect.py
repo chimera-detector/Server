@@ -27,14 +27,14 @@ def words_to_indices(inverse_vocabulary, words):
 
 
 
-class Predictor (object):
+class Detector (object):
     def __init__(self, model_path):
         model = ConvolutionalNet(vocabulary_size=len(vocabulary), embedding_dimension=EMBEDDING_DIMENSION, input_length=SEQUENCE_LENGTH)
         model.load_weights(model_path)
         self.graph = tf.get_default_graph()
         self.model = model
 
-    def predict (self, headline):
+    def detect (self, headline):
         # headline = headline.encode("ascii", "ignore")
         inputs = sequence.pad_sequences([words_to_indices(inverse_vocabulary, clean(headline).lower().split())], maxlen=SEQUENCE_LENGTH)
         with self.graph.as_default():
@@ -43,6 +43,6 @@ class Predictor (object):
 
 
 
-predictor = Predictor("models/detector.h5")
+detector = Detector("models/detector.h5")
 if __name__ == "__main__":
-    print ("headline is {0} % clickbaity".format(round(predictor.predict(sys.argv[1]) * 100, 2)))
+    print ("headline is {0} % clickbaity".format(round(detector.detect(sys.argv[1]) * 100, 2)))
