@@ -76,28 +76,12 @@ def analyze ():
             """ Test Zone"""
             pushToDB(newsInfo)
 
+            return render_template('index.html', headline=newsInfo['headline'], cb_result=round(newsInfo['clickbaitiness'], 2)*100)
         else:
             newsInfo = None
-
-        return render_template('index.html', headline=newsInfo['headline'], cb_result=round(newsInfo['clickbaitiness'], 2)*100)
+            return render_template('index.html')
     else:
         return render_template('index.html')
-
-
-# Purpose of getClickbait: return all the queries what the clickbait table has.
-@app.route("/cb_result", methods=["GET"])
-def cb_result ():
-    queries = getClickbaitAll()
-    # TODO: this function need to return the list of json object
-    return jsonify(result = [q.serialize for q in queries])
-
-# Purpose of getClickbait: return all the queries what the clickbait table has.
-@app.route("/st_result", methods=["GET"])
-def st_result ():
-    queries = getStanceAll()
-    # TODO: this function need to return the list of json object
-    return jsonify(result = [q.serialize for q in queries])
-
 
 
 @app.route("/detect", methods=["GET"])
@@ -163,6 +147,41 @@ def predict ():
         pass
 
 
+
+""" ========== API =========== """
+
+
+@app.route("/api/download/<path>")
+def downloadFile(path = None):
+    if path is None:
+        self.error(400)
+    try:
+        return send_file(path, as_attachment=True)
+    except:
+        self.log.exception(e)
+        self.Error(400)
+
+
+# Purpose of getClickbait: return all the queries what the clickbait table has.
+@app.route("/api/cb_result", methods=["GET"])
+def cb_result ():
+    queries = getClickbaitAll()
+    # TODO: this function need to return the list of json object
+    return jsonify(result = [q.serialize for q in queries])
+
+
+# Purpose of getClickbait: return all the queries what the clickbait table has.
+@app.route("/api/t_result", methods=["GET"])
+def st_result ():
+    queries = getStanceAll()
+    # TODO: this function need to return the list of json object
+    return jsonify(result = [q.serialize for q in queries])
+
+
+
+""" ========== Utils =========== """
+
+
 def SaveToFile(row):
     # Assume that we already know the structure of csv file
     # Appending following row
@@ -212,23 +231,6 @@ def SaveToFile(row):
 
         readFile.close()
 
-
-
-""" ========== API =========== """
-
-@app.route("/api/download/<path>")
-def downloadFile(path = None):
-    if path is None:
-        self.error(400)
-    try:
-        return send_file(path, as_attachment=True)
-    except:
-        self.log.exception(e)
-        self.Error(400)
-
-
-
-""" ========== Utils =========== """
 
 # pushToDB function will push newsInfo into DB properly regardless the type of Info
 def pushToDB(newsInfo):
