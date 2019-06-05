@@ -57,7 +57,7 @@ def analyze ():
 
                 row = [headline, clickbaitiness] # For extracting as csv file
                 try:
-                    SetToFile(row)
+                    SaveToFile(row)
                 except Exception:
                     logging.error("store as file failed")
                     pass
@@ -146,7 +146,7 @@ def predict ():
 
             row = [headline, stance] # For extracting as csv file
             try:
-                SetToFile(row)
+                SaveToFile(row)
             except Exception:
                 logging.error("store as file failed")
                 pass
@@ -163,32 +163,56 @@ def predict ():
         pass
 
 
-def SetToFile(row):
+def SaveToFile(row):
     # Assume that we already know the structure of csv file
     # Appending following row
     flag = False
     headlines = []
 
-    with open('news.csv', 'r') as readFile:
-        reader = csv.reader(readFile)
-        lines = list(reader)
+    if len(row) < 3:
+        with open('clickbait.csv', 'r') as readFile:
+            reader = csv.reader(readFile)
+            lines = list(reader)
 
-        # Duplication article headline checking
-        for line in lines:
-            flag = (row[0] == line[0])
-            headlines.append(flag)
+            # Duplication article headline checking
+            for line in lines:
+                flag = (row[0] == line[0])
+                headlines.append(flag)
 
 
-        if True not in headlines:
-            with open('news.csv', 'a') as appendFile:
-                writer = csv.writer(appendFile)
-                writer.writerow(row)
+            if True not in headlines:
+                with open('clickbait.csv', 'a') as appendFile:
+                    writer = csv.writer(appendFile)
+                    writer.writerow(row)
 
-            appendFile.close()
-        else:
-            logging.error("headline is already exists")
+                appendFile.close()
+            else:
+                logging.error("headline exists on clickbait file")
 
-    readFile.close()
+        readFile.close()
+    else:
+        with open('stance.csv', 'r') as readFile:
+            reader = csv.reader(readFile)
+            lines = list(reader)
+
+            # Duplication article headline checking
+            for line in lines:
+                flag = (row[0] == line[0])
+                headlines.append(flag)
+
+
+            if True not in headlines:
+                with open('stance.csv', 'a') as appendFile:
+                    writer = csv.writer(appendFile)
+                    writer.writerow(row)
+
+                appendFile.close()
+            else:
+                logging.error("headline exists on stance file")
+
+        readFile.close()
+
+
 
 """ ========== API =========== """
 
