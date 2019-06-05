@@ -141,7 +141,7 @@ def predict ():
             stance = predictor.predict(headline, content)
 
             # push stance information into DB
-            newsInfo = jsonify({"headline": headline, "content": content, "stance": stance})
+            newsInfo = {"headline": headline, "content": content, "stance": stance}
             pushToDB(newsInfo)
 
             row = [headline, stance] # For extracting as csv file
