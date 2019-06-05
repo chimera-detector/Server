@@ -51,6 +51,8 @@
             {% if headline %}
               <p class="mb-7"><strong>Headline is:</strong></p>
               <p class="mb-7">{{ headline }}</p>
+            {% endif %}
+            {% if cb_result %}
               <p class="mb-7"><strong>Clickbait Rate:</strong></p>
               <p class="mb-7">{{ cb_result }}%</p>
             {% endif %}
