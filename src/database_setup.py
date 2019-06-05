@@ -10,6 +10,7 @@ Base = declarative_base()
 
 class Clickbait(Base):
     __tablename__ = 'clickbait'
+    # __table_args__ = {'autoload': True}
 
     id = Column(Integer, primary_key=True)
     title = Column(String(500), nullable=False)
@@ -26,11 +27,12 @@ class Clickbait(Base):
 
 class Stance(Base):
     __tablename__ = 'stance'
+    # __table_args__ = {'autoload': True}
 
-    id     = Column(Integer, primary_key=True)
-    title  = Column(String(500), nullable=False)
-    content= Column(String, nullable=False)
-    stance = Column(String(250))
+    id      = Column(Integer, primary_key=True)
+    title   = Column(String(500), nullable=False)
+    content = Column(String, nullable=False)
+    stance  = Column(String(250))
 
     @property
     def serialize(self):
@@ -38,6 +40,7 @@ class Stance(Base):
         return {
             'id': self.id,
             'title': self.title,
+            'content': self.content,
             'stance': self.stance
         }
 
