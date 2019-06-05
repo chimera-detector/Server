@@ -29,7 +29,7 @@ class Stance(Base):
 
     id     = Column(Integer, primary_key=True)
     title  = Column(String(500), nullable=False)
-    content   = Column(String(1500), nullable=False)
+    content= Column(String, nullable=False)
     stance = Column(String(250))
 
     @property
