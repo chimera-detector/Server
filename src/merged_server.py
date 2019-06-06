@@ -107,6 +107,7 @@ def predict ():
     headline = None
     content = None
     stance = None
+    exist_flag = False
 
     if validators.url(url) and url is not "":
         try:
@@ -121,19 +122,30 @@ def predict ():
 
         if headline is not None and content is not None:
 
-            predictor.save_testData(headline, content)
-            stance = predictor.predict(headline, content)
+            exist_flag = is_headline_duplicated_stance(headline)
+            if (exist_flag): # If True, then return the same stance value what already been stored
+                if headline is not None:
+                    query = session.query(Stance).filter_by(title=headline).one()
+                    if query is not None:
+                        stance = query.stance
+                    else:
+                        logging.error("Empty headline is given")
+                        pass
+            else:
 
-            # push stance information into DB
-            newsInfo = {"headline": headline, "content": content, "stance": stance}
-            pushToDB(newsInfo)
+                predictor.save_testData(headline, content)
+                stance = predictor.predict(headline, content)
 
-            row = [headline, stance] # For extracting as csv file
-            try:
-                SaveToFile(row)
-            except Exception:
-                logging.error("store as file failed")
-                pass
+                # push stance information into DB
+                newsInfo = {"headline": headline, "content": content, "stance": stance}
+                pushToDB(newsInfo)
+
+                row = [headline, stance] # For extracting as csv file
+                try:
+                    SaveToFile(row)
+                except Exception:
+                    logging.error("store as file failed")
+                    pass
 
             if stance is not None:
                 return jsonify({ "stance": stance})
@@ -171,7 +183,7 @@ def cb_result ():
 
 
 # Purpose of getClickbait: return all the queries what the clickbait table has.
-@app.route("/api/t_result", methods=["GET"])
+@app.route("/api/st_result", methods=["GET"])
 def st_result ():
     queries = getStanceAll()
     # TODO: this function need to return the list of json object
@@ -240,7 +252,7 @@ def pushToDB(newsInfo):
     print(newsInfo)
 
     if "stance" in newsInfo.keys() :
-        duplication_flag = is_headline_duplicated(newsInfo["headline"])
+        duplication_flag = is_headline_duplicated_stance(newsInfo["headline"])
         if duplication_flag is False :
             newArticle = Stance(title=newsInfo["headline"],
                                 content=newsInfo["content"],
@@ -252,7 +264,7 @@ def pushToDB(newsInfo):
         else:
             print("headline exists")
     else:
-        duplication_flag = is_headline_duplicated(newsInfo["headline"])
+        duplication_flag = is_headline_duplicated_clickbait(newsInfo["headline"])
         if duplication_flag is False :
             newArticle = Clickbait(title=newsInfo["headline"],
                                    clickbaitiness=newsInfo["clickbaitiness"])
@@ -264,13 +276,22 @@ def pushToDB(newsInfo):
             print("headline exists")
 
 
-def is_headline_duplicated(headline):
+def is_headline_duplicated_clickbait(headline):
     if headline is not None:
         queries = session.query(Clickbait).filter_by(title=headline).all()
         if len(queries) > 0:
             return True
         else:
             return False
+
+def is_headline_duplicated_stance(headline):
+    if headline is not None:
+        queries = session.query(Stance).filter_by(title=headline).all()
+        if len(queries) > 0:
+            return True
+        else:
+            return False
+
 
 
 # note that below functions return `Object`
