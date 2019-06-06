@@ -227,14 +227,13 @@
     var ubdData = {
       datasets: [{
         hoverBorderColor: '#ffffff',
-        data: [68.3, 24.2, 7.5],
+        data: [68.3, 31.7],
         backgroundColor: [
           'rgba(0,123,255,0.9)',
           'rgba(0,123,255,0.5)',
-          'rgba(0,123,255,0.3)'
         ]
       }],
-      labels: ["Desktop", "Tablet", "Mobile"]
+      labels: ["Number Of Clickbaits", "Number Of Wrong Stance Prediction"]
     };
 
     // Options
