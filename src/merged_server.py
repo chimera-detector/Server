@@ -84,7 +84,7 @@ def analyze ():
         return render_template('index.html')
 
 
-@app.route("/dashboard", methods=["GET, POST"])
+@app.route("/dashboard", methods=["GET"])
 def show_dashboard():
     try:
         # TODO: value filling required
