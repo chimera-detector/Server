@@ -227,7 +227,9 @@
                     <div class="d-flex flex-column m-auto">
                       <div class="stats-small__data text-center">
                         <span class="stats-small__label text-uppercase">Clickbaits</span>
-                        <h6 class="stats-small__value count my-3">2,390</h6>
+                        {%if clickbait%}
+                          <h6 class="stats-small__value count my-3">{{clickbait}}</h6>
+                        {%endif%}
                       </div>
                       <div class="stats-small__data">
                         <span class="stats-small__percentage stats-small__percentage--increase">4.7%</span>
@@ -243,7 +245,9 @@
                     <div class="d-flex flex-column m-auto">
                       <div class="stats-small__data text-center">
                         <span class="stats-small__label text-uppercase">Agree</span>
-                        <h6 class="stats-small__value count my-3">182</h6>
+                        {%if agree%}
+                          <h6 class="stats-small__value count my-3">{{agree}}</h6>
+                        {%endif%}
                       </div>
                       <div class="stats-small__data">
                         <span class="stats-small__percentage stats-small__percentage--increase">12.4%</span>
@@ -259,7 +263,9 @@
                     <div class="d-flex flex-column m-auto">
                       <div class="stats-small__data text-center">
                         <span class="stats-small__label text-uppercase">Disagree</span>
-                        <h6 class="stats-small__value count my-3">8,147</h6>
+                        {%if disagree%}
+                          <h6 class="stats-small__value count my-3">{{disagree}}</h6>
+                        {%endif%}
                       </div>
                       <div class="stats-small__data">
                         <span class="stats-small__percentage stats-small__percentage--decrease">3.8%</span>
@@ -275,7 +281,9 @@
                     <div class="d-flex flex-column m-auto">
                       <div class="stats-small__data text-center">
                         <span class="stats-small__label text-uppercase">Discuss</span>
-                        <h6 class="stats-small__value count my-3">2,413</h6>
+                        {%if discuss%}
+                          <h6 class="stats-small__value count my-3">{{discuss}}</h6>
+                        {%endif%}
                       </div>
                       <div class="stats-small__data">
                         <span class="stats-small__percentage stats-small__percentage--increase">12.4%</span>
@@ -291,7 +299,9 @@
                     <div class="d-flex flex-column m-auto">
                       <div class="stats-small__data text-center">
                         <span class="stats-small__label text-uppercase">Unrelated</span>
-                        <h6 class="stats-small__value count my-3">17,281</h6>
+                        {%if unrelated%}
+                          <h6 class="stats-small__value count my-3">{{unrelated}}</h6>
+                        {%endif%}
                       </div>
                       <div class="stats-small__data">
                         <span class="stats-small__percentage stats-small__percentage--decrease">2.4%</span>

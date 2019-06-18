@@ -87,8 +87,14 @@ def analyze ():
 @app.route("/dashboard", methods=["GET"])
 def show_dashboard():
     try:
-        # TODO: value filling required
-        return render_template('dashboard.html')
+        # TODO: need to able to add real time DB status
+        clickbait = "2,390"
+        agree = "182"
+        disagree = "8,147"
+        discuss = "2,413"
+        unrelated = "17,281"
+
+        return render_template('dashboard.html', clickbait=clickbait, agree=agree, disagree=disagree, discuss=discuss, unrelated=unrelated)
     except:
         logging.error("dashboard view get me an error")
         return render_template('errors.html')
