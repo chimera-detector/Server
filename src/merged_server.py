@@ -193,7 +193,7 @@ def downloadFile(path = None):
 
 
 # Purpose of getClickbait: return all the queries what the clickbait table has.
-@app.route("/api/clickbaits", methods=["GET"])
+@app.route("/json/clickbaits", methods=["GET"])
 def cb_result ():
     queries = getClickbaitAll()
     # TODO: this function need to return the list of json object
@@ -201,7 +201,7 @@ def cb_result ():
 
 
 # Purpose of getClickbait: return all the queries what the clickbait table has.
-@app.route("/api/stances", methods=["GET"])
+@app.route("/json/stances", methods=["GET"])
 def st_result ():
     queries = getStanceAll()
     # TODO: this function need to return the list of json object
