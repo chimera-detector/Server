@@ -94,7 +94,31 @@ def show_dashboard():
         discuss = 2413
         unrelated = 17281
 
-        # TODO: need to add items from DB
+        # add existing number of articles with PROPER criteria
+        cb_queries = getClickbaitAll()
+        st_queries = getStanceAll()
+
+        # In this case, I fixed the criteria as 0.5 which means 50% clickbaitiness
+        cb_result = [q.clickbaitiness > 0.50 for q in cb_queries]
+        cb_num = sum(cb_result)
+
+        clickbait = clickbait + cb_num
+
+        # In this case, I used concrete stance value as criteria
+        st_agree = [q.stance == 'agree' for q in st_queries]
+        st_disagree = [q.stance == 'disagree' for q in st_queries]
+        st_discuss = [q.stance == 'discuss' for q in st_queries]
+        st_unrelated = [q.stance == 'unrelated' for q in st_queries]
+
+        agree_num = sum(st_agree)
+        disagree_num = sum(st_disagree)
+        discuss_num = sum(st_discuss)
+        unrelated_num = sum(st_unrelated)
+
+        agree = agree + agree_num
+        disagree = disagree + disagree_num
+        discuss = discuss + discuss_num
+        unrelated = unrelated + unrelated_num
 
         return render_template('dashboard.html', clickbait=clickbait, agree=agree, disagree=disagree, discuss=discuss, unrelated=unrelated)
     except:
