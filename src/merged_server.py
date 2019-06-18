@@ -87,12 +87,14 @@ def analyze ():
 @app.route("/dashboard", methods=["GET"])
 def show_dashboard():
     try:
-        # TODO: need to able to add real time DB status
-        clickbait = "2,390"
-        agree = "182"
-        disagree = "8,147"
-        discuss = "2,413"
-        unrelated = "17,281"
+        # initial dummy values prior to add existing number of articles
+        clickbait = 2390
+        agree = 182
+        disagree = 8147
+        discuss = 2413
+        unrelated = 17281
+
+        # TODO: need to add items from DB
 
         return render_template('dashboard.html', clickbait=clickbait, agree=agree, disagree=disagree, discuss=discuss, unrelated=unrelated)
     except:
