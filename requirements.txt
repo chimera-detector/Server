@@ -52,7 +52,7 @@ numpy==1.11.3
 packaging==16.8
 parsel==1.5.1
 pbr==1.10.0
-Pillow==6.0.0
+Pillow==6.2.0
 plac==1.0.0
 praw==6.2.0
 prawcore==1.0.1
